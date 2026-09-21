@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TVM Calculator | BS3210 Finance</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header>
+  <h1>&#128200; Time Value of Money Calculator</h1>
+  <p>BS3210: Finance for Engineers, Designers and Professionals &mdash; MIT Vishwaprayag University, Solapur</p>
+</header>
+
+<nav>
+  <button class="active" data-target="calc-fv">&#128181; Future Value</button>
+  <button data-target="calc-pv">&#128184; Present Value</button>
+  <button data-target="calc-si">&#129691; Simple Interest</button>
+  <button data-target="calc-ci">&#128176; Compound Interest</button>
+  <button data-target="calc-emi">&#127968; EMI</button>
+  <button data-target="calc-amort">&#128203; Amortization</button>
+  <button data-target="calc-scenario">&#128202; Scenario Analysis</button>
+</nav>
+
+<main>
+
+  <!-- ======================== FUTURE VALUE ======================== -->
+  <section class="calculator active" id="calc-fv">
+    <div class="calc-title">
+      <span>Future Value Calculator</span>
+      <span class="badge">Calculator 1</span>
+    </div>
+    <p class="calc-subtitle">Calculate how much your investment will grow over time.</p>
+
+    <div class="formula-box">
+      <strong>&#128218; Formula</strong>
+      <code>FV = P &times; (1 + r)^n</code>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="fv-principal">Principal Amount <span class="unit">(Rs.)</span></label>
+        <input type="number" id="fv-principal" placeholder="e.g. 10000" min="1" step="any" />
+        <span class="error-msg" id="fv-err-principal"></span>
+      </div>
+      <div class="form-group">
+        <label for="fv-rate">Annual Interest Rate <span class="unit">(%)</span></label>
+        <input type="number" id="fv-rate" placeholder="e.g. 8" min="0" step="any" />
+        <span class="error-msg" id="fv-err-rate"></span>
+      </div>
+      <div class="form-group">
+        <label for="fv-time">Time Period <span class="unit">(Years)</span></label>
+        <input type="number" id="fv-time" placeholder="e.g. 5" min="1" step="any" />
+        <span class="error-msg" id="fv-err-time"></span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="calcFV()">Calculate Future Value</button>
+      <button class="btn btn-secondary" onclick="resetFV()">Reset</button>
+    </div>
+
+    <div id="fv-alert" class="alert-error"></div>
+
+    <div class="result-card" id="fv-result">
+      <h3>&#10003; Results</h3>
+      <div class="result-grid">
+        <div class="result-item">
+          <div class="label">Future Value</div>
+          <div class="value highlight" id="fv-out-fv">—</div>
+        </div>
+        <div class="result-item">
+          <div class="label">Principal Invested</div>
+          <div class="value" id="fv-out-principal">—</div>
+        </div>
+        <div class="result-item">
+          <div class="label">Interest Earned</div>
+          <div class="value" id="fv-out-interest">—</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== PRESENT VALUE ======================== -->
+  <section class="calculator" id="calc-pv">
+    <div class="calc-title">
+      <span>Present Value Calculator</span>
+      <span class="badge">Calculator 2</span>
+    </div>
+    <p class="calc-subtitle">Find the current worth of a future sum of money.</p>
+
+    <div class="formula-box">
+      <strong>&#128218; Formula</strong>
+      <code>PV = FV &divide; (1 + r)^n</code>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="pv-fv">Future Value <span class="unit">(Rs.)</span></label>
+        <input type="number" id="pv-fv" placeholder="e.g. 15000" min="1" step="any" />
+        <span class="error-msg" id="pv-err-fv"></span>
+      </div>
+      <div class="form-group">
+        <label for="pv-rate">Discount Rate <span class="unit">(%)</span></label>
+        <input type="number" id="pv-rate" placeholder="e.g. 10" min="0" step="any" />
+        <span class="error-msg" id="pv-err-rate"></span>
+      </div>
+      <div class="form-group">
+        <label for="pv-time">Time Period <span class="unit">(Years)</span></label>
+        <input type="number" id="pv-time" placeholder="e.g. 5" min="1" step="any" />
+        <span class="error-msg" id="pv-err-time"></span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="calcPV()">Calculate Present Value</button>
+      <button class="btn btn-secondary" onclick="resetPV()">Reset</button>
+    </div>
+
+    <div class="result-card" id="pv-result">
+      <h3>&#10003; Results</h3>
+      <div class="result-grid">
+        <div class="result-item">
+          <div class="label">Present Value</div>
+          <div class="value highlight" id="pv-out-pv">—</div>
+        </div>
+        <div class="result-item">
+          <div class="label">Future Value</div>
+          <div class="value" id="pv-out-fv">—</div>
+        </div>
+        <div class="result-item">
+          <div class="label">Total Discount</div>
+          <div class="value" id="pv-out-discount">—</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== SIMPLE INTEREST ======================== -->
+  <section class="calculator" id="calc-si">
+    <div class="calc-title">
+      <span>Simple Interest Calculator</span>
+      <span class="badge">Calculator 3</span>
+    </div>
+    <p class="calc-subtitle">Calculate interest on principal at a fixed rate over time.</p>
+
+    <div class="formula-box">
+      <strong>&#128218; Formula</strong>
+      <code>SI = P &times; r &times; t &nbsp;&nbsp;|&nbsp;&nbsp; Maturity = P + SI</code>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="si-principal">Principal <span class="unit">(Rs.)</span></label>
+        <input type="number" id="si-principal" placeholder="e.g. 10000" min="1" step="any" />
+        <span class="error-msg" id="si-err-principal"></span>
+      </div>
+      <div class="form-group">
+        <label for="si-rate">Interest Rate <span class="unit">(%)</span></label>
+        <input type="number" id="si-rate" placeholder="e.g. 8" min="0" step="any" />
+        <span class="error-msg" id="si-err-rate"></span>
+      </div>
+      <div class="form-group">
+        <label for="si-time">Time <span class="unit">(Years)</span></label>
+        <input type="number" id="si-time" placeholder="e.g. 3" min="0.01" step="any" />
+        <span class="error-msg" id="si-err-time"></span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="calcSI()">Calculate Simple Interest</button>
+      <button class="btn btn-secondary" onclick="resetSI()">Reset</button>
+    </div>
+
+    <div class="result-card" id="si-result">
+      <h3>&#10003; Results</h3>
+      <div class="result-grid">
+        <div class="result-item">
+          <div class="label">Interest Earned</div>
+          <div class="value highlight" id="si-out-si">—</div>
+        </div>
+        <div class="result-item">
+          <div class="label">Maturity Value</div>
+          <div class="value highlight" id="si-out-maturity">—</div>
+        </div>
+        <div class="result-item">
+          <div class="label">Principal</div>
+          <div class="value" id="si-out-principal">—</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== COMPOUND INTEREST ======================== -->
+  <section class="calculator" id="calc-ci">
+    <div class="calc-title">
+      <span>Compound Interest Calculator</span>
+      <span class="badge">Calculator 4</span>
+    </div>
+    <p class="calc-subtitle">Calculate interest compounded at regular intervals.</p>
+
+    <div class="formula-box">
+      <strong>&#128218; Formula</strong>
+      <code>A = P &times; (1 + r/n)^(n&times;t) &nbsp;&nbsp;|&nbsp;&nbsp; CI = A &minus; P</code>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="ci-principal">Principal <span class="unit">(Rs.)</span></label>
+        <input type="number" id="ci-principal" placeholder="e.g. 10000" min="1" step="any" />
+        <span class="error-msg" id="ci-err-principal"></span>
+      </div>
+      <div class="form-group">
+        <label for="ci-rate">Annual Interest Rate <span class="unit">(%)</span></label>
+        <input type="number" id="ci-rate" placeholder="e.g. 10" min="0" step="any" />
+        <span class="error-msg" id="ci-err-rate"></span>
+      </div>
+      <div class="form-group">
+        <label for="ci-time">Time <span class="unit">(Years)</span></label>
+        <input type="number" id="ci-time" placeholder="e.g. 5" min="0.01" step="any" />
+        <span class="error-msg" id="ci-err-time"></span>
+      </div>
+      <div class="form-group">
+        <label for="ci-freq">Compounding Frequency</label>
+        <select id="ci-freq">
+          <option value="1">Annually (1x / year)</option>
+          <option value="2">Semi-Annually (2x / year)</option>
+          <option value="4">Quarterly (4x / year)</option>
+          <option value="12" selected>Monthly (12x / year)</option>
+          <option value="365">Daily (365x / year)</option>
+        </select>
+        <span class="error-msg" id="ci-err-freq"></span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="calcCI()">Calculate Compound Interest</button>
+      <button class="btn btn-secondary" onclick="resetCI()">Reset</button>
+    </div>
+
+    <div class="result-card" id="ci-result">
+      <h3>&#10003; Results</h3>
+      <div class="result-grid">
+        <div class="result-item">
+          <div class="label">Compound Interest</div>
+          <div class="value highlight" id="ci-out-ci">—</div>
+        </div>
+        <div class="result-item">
+          <div class="label">Maturity Value</div>
+          <div class="value highlight" id="ci-out-maturity">—</div>
+        </div>
+        <div class="result-item">
+          <div class="label">Principal</div>
+          <div class="value" id="ci-out-principal">—</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== EMI CALCULATOR ======================== -->
+  <section class="calculator" id="calc-emi">
+    <div class="calc-title">
+      <span>EMI Calculator</span>
+      <span class="badge">Calculator 5</span>
+    </div>
+    <p class="calc-subtitle">Calculate your Equated Monthly Instalment for any loan.</p>
+
+    <div class="formula-box">
+      <strong>&#128218; Formula</strong>
+      <code>EMI = [P &times; r &times; (1 + r)^n] &divide; [(1 + r)^n &minus; 1] &nbsp;&nbsp;|&nbsp;&nbsp; r = Annual Rate &divide; 12 &divide; 100</code>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="emi-loan">Loan Amount <span class="unit">(Rs.)</span></label>
+        <input type="number" id="emi-loan" placeholder="e.g. 500000" min="1" step="any" />
+        <span class="error-msg" id="emi-err-loan"></span>
+      </div>
+      <div class="form-group">
+        <label for="emi-rate">Annual Interest Rate <span class="unit">(%)</span></label>
+        <input type="number" id="emi-rate" placeholder="e.g. 10" min="0.01" step="any" />
+        <span class="error-msg" id="emi-err-rate"></span>
+      </div>
+      <div class="form-group">
+        <label for="emi-tenure">Loan Tenure <span class="unit">(Months)</span></label>
+        <input type="number" id="emi-tenure" placeholder="e.g. 60" min="1" step="1" />
+        <span class="error-msg" id="emi-err-tenure"></span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="calcEMI()">Calculate EMI</button>
+      <button class="btn btn-secondary" onclick="resetEMI()">Reset</button>
+    </div>
+
+    <div class="result-card" id="emi-result">
+      <h3>&#10003; Results</h3>
+      <div class="result-grid">
+        <div class="result-item">
+          <div class="label">Monthly EMI</div>
+          <div class="value highlight" id="emi-out-emi">—</div>
+        </div>
+        <div class="result-item">
+          <div class="label">Total Payment</div>
+          <div class="value" id="emi-out-total">—</div>
+        </div>
+        <div class="result-item">
+          <div class="label">Total Interest Payable</div>
+          <div class="value" id="emi-out-interest">—</div>
+        </div>
+        <div class="result-item">
+          <div class="label">Principal (Loan Amount)</div>
+          <div class="value" id="emi-out-principal">—</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== AMORTIZATION SCHEDULE ======================== -->
+  <section class="calculator" id="calc-amort">
+    <div class="calc-title">
+      <span>Loan Amortization Schedule</span>
+      <span class="badge">Calculator 6</span>
+    </div>
+    <p class="calc-subtitle">View a complete month-by-month breakdown of your loan repayment.</p>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="amort-loan">Loan Amount <span class="unit">(Rs.)</span></label>
+        <input type="number" id="amort-loan" placeholder="e.g. 500000" min="1" step="any" />
+        <span class="error-msg" id="amort-err-loan"></span>
+      </div>
+      <div class="form-group">
+        <label for="amort-rate">Annual Interest Rate <span class="unit">(%)</span></label>
+        <input type="number" id="amort-rate" placeholder="e.g. 10" min="0.01" step="any" />
+        <span class="error-msg" id="amort-err-rate"></span>
+      </div>
+      <div class="form-group">
+        <label for="amort-tenure">Tenure <span class="unit">(Months)</span></label>
+        <input type="number" id="amort-tenure" placeholder="e.g. 60" min="1" step="1" />
+        <span class="error-msg" id="amort-err-tenure"></span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="calcAmort()">Generate Schedule</button>
+      <button class="btn btn-secondary" onclick="resetAmort()">Reset</button>
+    </div>
+
+    <div id="amort-table-wrap" class="table-container">
+      <div class="table-summary" style="margin: 16px 0 0 0; border-radius: 8px 8px 0 0;">
+        <div class="table-summary-item">
+          <div class="lbl">Monthly EMI</div>
+          <div class="val" id="amort-sum-emi">—</div>
+        </div>
+        <div class="table-summary-item">
+          <div class="lbl">Total Payment</div>
+          <div class="val" id="amort-sum-total">—</div>
+        </div>
+        <div class="table-summary-item">
+          <div class="lbl">Total Interest</div>
+          <div class="val" id="amort-sum-interest">—</div>
+        </div>
+      </div>
+      <table class="amort-table">
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>Opening Balance</th>
+            <th>Interest</th>
+            <th>Principal Repaid</th>
+            <th>EMI</th>
+            <th>Closing Balance</th>
+          </tr>
+        </thead>
+        <tbody id="amort-tbody"></tbody>
+        <tfoot id="amort-tfoot"></tfoot>
+      </table>
+    </div>
+  </section>
+
+  <!-- ======================== SCENARIO ANALYSIS ======================== -->
+  <section class="calculator" id="calc-scenario">
+    <div class="calc-title">
+      <span>Scenario Analysis</span>
+      <span class="badge">Calculator 7</span>
+    </div>
+    <p class="calc-subtitle">Compare investment growth and loan costs across 4 interest rate scenarios: <strong>8%, 10%, 12%, 15%</strong></p>
+
+    <div class="scenario-inputs">
+      <h4>&#128200; Investment Parameters</h4>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="sc-principal">Investment / Principal <span class="unit">(Rs.)</span></label>
+          <input type="number" id="sc-principal" placeholder="e.g. 100000" min="1" step="any" />
+          <span class="error-msg" id="sc-err-principal"></span>
+        </div>
+        <div class="form-group">
+          <label for="sc-fvtime">Investment Period <span class="unit">(Years)</span></label>
+          <input type="number" id="sc-fvtime" placeholder="e.g. 10" min="1" step="any" />
+          <span class="error-msg" id="sc-err-fvtime"></span>
+        </div>
+      </div>
+
+      <h4 style="margin-top:14px;">&#127968; Loan Parameters</h4>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="sc-loan">Loan Amount <span class="unit">(Rs.)</span></label>
+          <input type="number" id="sc-loan" placeholder="e.g. 500000" min="1" step="any" />
+          <span class="error-msg" id="sc-err-loan"></span>
+        </div>
+        <div class="form-group">
+          <label for="sc-tenure">Loan Tenure <span class="unit">(Months)</span></label>
+          <input type="number" id="sc-tenure" placeholder="e.g. 120" min="1" step="1" />
+          <span class="error-msg" id="sc-err-tenure"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="calcScenario()">Run Scenario Analysis</button>
+      <button class="btn btn-secondary" onclick="resetScenario()">Reset</button>
+    </div>
+
+    <div id="scenario-table-wrap" class="scenario-table-wrap">
+      <p style="font-size:0.75rem;color:var(--text-muted);padding:10px 0 6px;">
+        <strong style="color:var(--success)">&#9650; Green</strong> = Most favourable &nbsp;|&nbsp;
+        <strong style="color:var(--danger)">&#9660; Red</strong> = Least favourable
+      </p>
+      <table class="scenario-table">
+        <thead>
+          <tr>
+            <th>Interest Rate</th>
+            <th>Future Value (Investment)</th>
+            <th>Monthly EMI (Loan)</th>
+            <th>Total Loan Payment</th>
+            <th>Total Interest Paid</th>
+          </tr>
+        </thead>
+        <tbody id="scenario-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>TVM Calculator &mdash; BS3210 Assignment 1 &mdash; MIT Vishwaprayag University, Solapur &mdash; All calculations are for educational purposes.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

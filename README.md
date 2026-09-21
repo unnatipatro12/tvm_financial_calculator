@@ -11,11 +11,11 @@ A fully-featured, browser-based **Time Value of Money (TVM) Calculator** built w
 
 Simply clone or download the repository, then open `index.html` directly in your browser. No server setup required.
 
-`ash
-git clone https://github.com/KartikMangalpalli/TVM-Calculator.git
-cd TVM-Calculator
+```bash
+git clone https://github.com/unnatipatro12/tvm_financial_calculator.git
+cd tvm_financial_calculator
 # Open index.html in your browser
-`
+```
 
 ---
 
@@ -65,7 +65,7 @@ The application includes **7 financial calculators**, accessible via a sticky na
 ## 📂 Project Structure
 
 `
-TVM-Calculator/
+tvm_financial_calculator/
 ├── index.html          # Main HTML — all 7 calculator sections + navigation
 ├── style.css           # Complete stylesheet — theming, layout, responsive
 ├── script.js           # All financial calculations and UI logic
@@ -74,7 +74,7 @@ TVM-Calculator/
 ├── PROJECT_CONTEXT.md  # Assignment context and formula reference
 ├── TEST_REPORT.md      # Manual test cases and verified results
 └── Assignment 1.pdf    # Original assignment specification
-`
+```
 
 ---
 
